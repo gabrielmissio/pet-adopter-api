@@ -74,11 +74,25 @@ const get = async params => {
   }
 };
 
+const update = async params => {
+  try {
+    const result = await DYNAMODB_CLIENT.update(params).promise();
+    if (getDynamodbResponseError(result)) {
+      throw Error(getDynamodbResponseError(result));
+    }
+  
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+};
 
 module.exports = {
   putItem,
   query,
   deepScan,
   scan,
-  get
+  get,
+  update
 };
