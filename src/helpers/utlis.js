@@ -55,11 +55,14 @@ const buildResponseMessage = message => ({ message });
 
 const isUserIsActive = user => user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
 
+const mergeObjects = (baseObject, toReplaceObject) => Object.assign({}, baseObject, toReplaceObject);
+
 module.exports = {
   deepScan,
   getDynamodbResponseError,
   buildResponseMessage,
   getStatusCode,
   formatError,
-  isUserIsActive
+  isUserIsActive,
+  mergeObjects
 };
