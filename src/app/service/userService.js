@@ -11,13 +11,15 @@ const {
   buildPutItemsParams,
   buildQueryParams,
   buildGetParams,
-  buildUpdateParams
+  buildUpdateParams,
+  buildDeepScanParams,
 } = require('./../mapper/clientMapper');
 const {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
-  buildUserInfoObject
+  buildUserInfoObject,
+  buildGetUsersByStatusParams
 } = require('./../mapper/userMapper');
 
 const {
@@ -40,8 +42,9 @@ const {
 
 const getUsers = async payload => {
   try {
-    console.log(payload);
-    return { message: `GET /user` };
+    const users = await getUsersByStatus(payload.status);
+
+    return users;
   } catch (error) {
     console.log(`UserService -> updateUser -> error -> ${JSON.stringify(error)}`);
     throw error;
@@ -55,7 +58,7 @@ const updateUser = async(id, payload) => {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
-    const user = buildUserInfoObject(payload);
+    const user = buildUserInfoObject(payload);// TODO: merge request params with db params
     await update(buildUpdateParams(buildUpdateUserParams({id: id, value: user})));
     // TODO: validate response
 
@@ -97,6 +100,18 @@ const getUserByEmail = async payload => {
     const response = await query(buildQueryParams(params));
 
     return response.Items[0];
+  } catch (error) {
+    console.log('AuthService -> getUserByEmail -> error -> ', error);
+    throw error;
+  }
+};
+
+const getUsersByStatus = async status => {
+  try {
+    const params = buildGetUsersByStatusParams(status);
+    const response = await deepScan(buildDeepScanParams(params));
+
+    return response.Items;
   } catch (error) {
     console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
