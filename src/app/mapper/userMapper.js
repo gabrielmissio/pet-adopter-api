@@ -23,17 +23,27 @@ const buildGetUserByIdParams = id => {
 
 const buildUpdateUserParams = payload => {
   return {
-    TableName: USERS_TABLE_NAME,
-    Key: {
+    tableName: USERS_TABLE_NAME,
+    key: {
       'id': payload.id
     },
-    UpdateExpression: 'set info = :value',
-    ExpressionAttributeValues: {':value': payload.value}
+    updateExpression: 'set info = :value',
+    expressionAttributeValues: {':value': payload.value}
   };
 };
+
+const buildUserInfoObject = payload => {
+  return {
+    updatedAt: Date.now(),
+    addresses: payload.addresses || [],
+    adptions: payload.adptions || []
+  };
+};
+
 
 module.exports = {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
-  buildUpdateUserParams
+  buildUpdateUserParams,
+  buildUserInfoObject
 };
