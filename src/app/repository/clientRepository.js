@@ -60,10 +60,25 @@ const scan = async params => {
   }
 };
 
+const get = async params => {
+  try {
+    const result = await DYNAMODB_CLIENT.get(params).promise();
+    if (getDynamodbResponseError(result)) {
+      throw Error(getDynamodbResponseError(result));
+    }
+  
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
 
 module.exports = {
   putItem,
   query,
   deepScan,
-  scan
+  scan,
+  get
 };
