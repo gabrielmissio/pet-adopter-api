@@ -21,8 +21,10 @@ provider:
         - 'dynamodb:GetRecords'
         - 'dynamodb:Query'
         - 'dynamodb:Scan'
+        - 'dynamodb:PutItem'
       Resource:
         - ${self:custom.params.usersTableArn}/*
+        - ${self:custom.params.usersTableArn}
 
 plugins:
   - serverless-offline
