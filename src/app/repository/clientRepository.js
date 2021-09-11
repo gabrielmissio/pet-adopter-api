@@ -1,5 +1,5 @@
 const { DYNAMODB_CLIENT } = require('./../../config');
-const { getDynamodbResponseError } = require('./../../helpers/utlis');
+const { getDynamodbResponseError, deepScan: deepScanUtil } = require('./.././../helpers/utlis');
 
 const putItem = async params => {
   try {
@@ -29,9 +29,41 @@ const query = async params => {
     console.error(`ProfileRepository -> getProfileByEmail -> error -> \n ${JSON.stringify(error)}`);
     throw new Error(error);
   }
-};  
+};
+
+const deepScan = async params => {
+  try {
+    const result = await deepScanUtil(DYNAMODB_CLIENT, params);
+  
+    if (getDynamodbResponseError(result)) {
+      throw Error(getDynamodbResponseError(result));
+    }
+  
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
+const scan = async params => {
+  try {
+    const result = await DYNAMODB_CLIENT.scan(params).promise();
+    if (getDynamodbResponseError(result)) {
+      throw Error(getDynamodbResponseError(result));
+    }
+  
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
 
 module.exports = {
   putItem,
-  query
+  query,
+  deepScan,
+  scan
 };

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { SECRET } = require('./../../config');// TODO: get secret from parameter store
 const { RequestError } = require('./../../helpers/errors');
-const { putItem, query } = require('./../repository/authRepository');
+const { putItem, query } = require('./../repository/clientRepository');
 const {
   buildPutItemsParams,
   buildUserObject,
