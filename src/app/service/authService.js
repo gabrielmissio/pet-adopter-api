@@ -5,11 +5,16 @@ const { RequestError } = require('./../../helpers/errors');
 const { putItem, query } = require('./../repository/clientRepository');
 const {
   buildPutItemsParams,
-  buildUserObject,
-  buildQueryParams,
-  buildGetUserByEmailParams,
-  buildCreateUserParams
+  buildQueryParams
+} = require('./../mapper/clientMapper');
+const {
+  buildAuthUserObject,
+  buildCreateAuthUserParams
 } = require('./../mapper/authMapper');
+const {
+  buildGetUserByEmailParams
+} = require('./../mapper/userMapper');
+
 const {
   errorMessagesEnums: {
     USER_ALREADY_EXISTS,
@@ -36,10 +41,10 @@ const singup = async payload => {
       throw new RequestError(USER_ALREADY_EXISTS, CONFLICT_CODE, CONFLICT_SCOPE);
     }
 
-    const user = await buildUserObject(payload);
+    const user = await buildAuthUserObject(payload);
     user.password = await bcrypt.hash(user.password, 10);
-    // const response =  await putItem(buildPutItemsParams(buildCreateUserParams(user)));
-    await putItem(buildPutItemsParams(buildCreateUserParams(user)));
+    // const response =  await putItem(buildPutItemsParams(buildCreateAuthUserParams(user)));
+    await putItem(buildPutItemsParams(buildCreateAuthUserParams(user)));
     // validate response
 
     const token = generateToken({ id: user.id });

@@ -40,7 +40,25 @@ const buildDeepScanParams = payload => {
   };
 };
 
+const buildPutItemsParams = payload => {
+  return {
+    TableName: payload.tableName,
+    Item: payload.item
+  };
+};
+
+const buildQueryParams = payload => {
+  return {
+    TableName: payload.tableName,
+    IndexName: payload.indexName,
+    KeyConditionExpression: payload.keyConditionExpression,
+    ExpressionAttributeValues: payload.expressionAttributeValues,
+    Limit: payload.limit
+  };
+};
 module.exports = {
   buildScanParams,
-  buildDeepScanParams
+  buildDeepScanParams,
+  buildPutItemsParams,
+  buildQueryParams
 };
