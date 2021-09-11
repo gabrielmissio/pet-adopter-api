@@ -1,7 +1,7 @@
 const { httpCodesEnums: { OK, CREATED } } = require('./../../helpers/enums');
 const { singin: signinService, singup: singupService } = require('./../service/authService');
 const { formatError, getStatusCode } = require('./../../helpers/utlis');
-const { serialize: sessionSerialize } = require('./../serializer/sessionSerializer');
+const { serialize: sessionSerialize } = require('./../serializer/auth/sessionSerializer');
 
 const singup = async(req, res) => {
   try {
