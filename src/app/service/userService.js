@@ -19,24 +19,28 @@ const {
   buildGetUserByIdParams,
   buildUpdateUserParams,
   buildUserInfoObject,
-  buildGetUsersByStatusParams
+  buildGetUsersByStatusParams,
+  buildUpdateUserAccountStatusParams
 } = require('./../mapper/userMapper');
 
 const {
   errorMessagesEnums: {
     USER_ALREADY_EXISTS,
     USER_NOT_FOUND,
-    INVALID_CREDENTIALS
+    INVALID_CREDENTIALS,
+    USER_WITH_INACTIVE_ACCOUNT
   },
   errorScopesEnums: {
     INVALID_CREDENTIALS: INVALID_CREDENTIALS_SCOPE,
     NOT_FOUND: NOT_FOUND_SCOPE,
-    CONFLICT: CONFLICT_SCOPE
+    CONFLICT: CONFLICT_SCOPE,
+    INACTIVE_ACCOUNT: INACTIVE_ACCOUNT_SCOPE
   },
   httpCodesEnums: {
     CONFLICT: CONFLICT_CODE,
     BAD_REQUEST: BAD_REQUEST_CODE,
-    NOT_FOUND: NOT_FOUND_CODE
+    NOT_FOUND: NOT_FOUND_CODE,
+    UNAUTHORIZED: UNAUTHORIZED_CODE
   }
 } = require('./../../helpers/enums');
 
@@ -70,10 +74,22 @@ const updateUser = async(id, payload) => {
   }
 };
 
-const deleteUser = async payload => { // TODO: implement deleteUserById
+const deleteUser = async id => { // TODO: implement deleteUserById
   try {
-    console.log(payload);
-    return { message: `DELETE /user/${payload.id}` };
+    const user = await getUserByIdHandler(id);
+    if (!user) {
+      throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
+
+    const userIsActive = user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
+    if (!userIsActive) {
+      throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
+    }
+    
+    const response = await deleteUserById(id);
+    
+
+    return response;
   } catch (error) {
     console.log(`UserService -> updateUser -> error -> ${JSON.stringify(error)}`);
     throw error;
@@ -93,6 +109,19 @@ const getUserById = async id => {
     throw error;
   }
 };
+
+const deleteUserById = async id => {
+  try {
+    const params = buildUpdateUserAccountStatusParams({ id: id, accountStatus: 'inactive' });
+    const response = await update(buildUpdateParams(params));
+
+    return response;// TODO: validate response
+  } catch (error) {
+    console.log('AuthService -> getUserByEmail -> error -> ', error);
+    throw error;
+  }
+};
+
 
 const getUserByEmail = async payload => {
   try {
