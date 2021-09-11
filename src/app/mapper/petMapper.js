@@ -35,8 +35,18 @@ const buildGetPetsByStatusParams = status => {
   };
 };
 
+const buildGetPetByIdParams = id => {
+  return {
+    tableName: PETS_TABLE_NAME,
+    key: {
+      'id': id
+    }
+  };
+};
+
 module.exports = {
   buildPetObject,
   buildCreatePetParams,
-  buildGetPetsByStatusParams
+  buildGetPetsByStatusParams,
+  buildGetPetByIdParams
 };
