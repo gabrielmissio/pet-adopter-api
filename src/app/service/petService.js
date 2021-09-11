@@ -19,6 +19,7 @@ const { mergeObjects } = require('./../../helpers/utlis')
 
 const createPet = async payload => {
   try {
+    payload.accountStatus = 'active';
     const pet = buildPetObject(payload);
     const params = buildCreatePetParams(pet);
     await putItem(buildPutItemsParams(params));// TODO: validate response
