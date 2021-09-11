@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { SECRET } = require('./../../config');// TODO: get secret from parameter store
 const { RequestError } = require('./../../helpers/errors');
 const { putItem, query } = require('./../repository/clientRepository');
+const {  getUserByEmail } = require('./../service/userService');
 const {
   buildPutItemsParams,
   buildQueryParams
@@ -74,18 +75,6 @@ const singin = async payload => {
     return { user, token };
   } catch (error) {
     console.error('AuthService -> singin -> error -> ', error);
-    throw error;
-  }
-};
-
-const getUserByEmail = async payload => {
-  try {
-    const params = buildGetUserByEmailParams(payload);
-    const response = await query(buildQueryParams(params));
-
-    return response.Items[0];
-  } catch (error) {
-    console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
   }
 };

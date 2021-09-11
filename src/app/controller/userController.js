@@ -20,7 +20,7 @@ const getUser = async(req, res) => {
 
 const updateUser = async(req, res) => {
   try {
-    const response = await updateUserService(req.body);
+    const response = await updateUserService(req.params.id, req.body);
 
     return res.status(OK).json(response);
   } catch (error) {
