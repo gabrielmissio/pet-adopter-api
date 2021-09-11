@@ -81,8 +81,7 @@ const deleteUser = async id => { // TODO: implement deleteUserById
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
-    const userIsActive = user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
-    if (!userIsActive) {
+    if (!isUserIsActive(user)) {
       throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
     
@@ -134,6 +133,8 @@ const getUserByEmail = async payload => {
     throw error;
   }
 };
+
+const isUserIsActive = user => user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
 
 const getUsersByStatus = async status => {
   try {
