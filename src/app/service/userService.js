@@ -67,7 +67,7 @@ const updateUser = async(id, payload) => {
   }
 };
 
-const deleteUser = async payload => {
+const deleteUser = async payload => { // TODO: implement deleteUserById
   try {
     console.log(payload);
     return { message: `DELETE /user/${payload.id}` };

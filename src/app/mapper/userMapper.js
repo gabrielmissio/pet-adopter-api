@@ -38,7 +38,8 @@ const buildUserInfoObject = payload => {
     addresses: payload.addresses || [],
     matches: payload.matches || [],
     phones: payload.phones || [],
-    adoptions: payload.adoptions || []
+    adoptions: payload.adoptions || [],
+    status: payload.status || 'active'
   };
 };
 
