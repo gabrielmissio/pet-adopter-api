@@ -42,7 +42,7 @@ const singup = async payload => {
       throw new RequestError(USER_ALREADY_EXISTS, CONFLICT_CODE, CONFLICT_SCOPE);
     }
 
-    const user = await buildAuthUserObject(payload);
+    const user = buildAuthUserObject(payload);
     user.password = await bcrypt.hash(user.password, 10);
     // const response =  await putItem(buildPutItemsParams(buildCreateAuthUserParams(user)));
     await putItem(buildPutItemsParams(buildCreateAuthUserParams(user)));
