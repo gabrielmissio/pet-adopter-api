@@ -1,14 +1,23 @@
 const { RequestError } = require('./../../helpers/errors');
-const { putItem, query, deepScan, scan, get } = require('./../repository/clientRepository');
+const {
+  putItem,
+  query,
+  deepScan,
+  scan,
+  get,
+  update
+} = require('./../repository/clientRepository');
 const {
   buildPutItemsParams,
   buildQueryParams,
-  buildGetParams
+  buildGetParams,
+  buildUpdateParams
 } = require('./../mapper/clientMapper');
 const {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
-  buildUpdateUserParams
+  buildUpdateUserParams,
+  buildUserInfoObject
 } = require('./../mapper/userMapper');
 
 const {
@@ -41,14 +50,17 @@ const getUsers = async payload => {
 
 const updateUser = async(id, payload) => {
   try {
-    const existingUser = await getUserByIdHandler(id);
-    
-    if (existingUser) {
-      throw new RequestError(USER_ALREADY_EXISTS, CONFLICT_CODE, CONFLICT_SCOPE);
+    const userToUpdate = await getUserByIdHandler(id);
+    if (!userToUpdate) {
+      throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
+    const user = buildUserInfoObject(payload);
+    await update(buildUpdateParams(buildUpdateUserParams({id: id, value: user})));
+    // validate response
+
     console.log(payload);
-    return existingUser;
+    return userToUpdate;
   } catch (error) {
     console.log(`UserService -> updateUser -> error -> ${JSON.stringify(error)}`);
     throw error;
@@ -92,7 +104,7 @@ const getUserByIdHandler = async payload => {
     const params = buildGetUserByIdParams(payload);
     const response = await get(buildGetParams(params));
 
-    return response;
+    return response.Item;
   } catch (error) {
     console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
