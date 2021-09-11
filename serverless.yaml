@@ -1,0 +1,47 @@
+service: pet-adopter-api
+
+custom:
+  params:
+    usersTableName: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/users/name}
+    usersTableArn: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/users/arn}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    USERS_TABLE_NAME: ${self:custom.params.usersTableName}
+    SECRET: 'c7aaa047d2e72b49c602a8917faaca7f'
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:BatchGetItem'
+        - 'dynamodb:GetItem'
+        - 'dynamodb:GetRecords'
+        - 'dynamodb:Query'
+        - 'dynamodb:Scan'
+      Resource:
+        - ${self:custom.params.usersTableArn}/*
+
+plugins:
+  - serverless-offline
+
+functions:
+  app:
+    handler: src/index.handler
+    timeout: 30
+    events:
+      - httpApi:
+          path: /auth/signin
+          method: POST
+      - httpApi:
+          path: /auth/signup
+          method: POST
+
+package:
+  exclude:
+    - ./**
+  include:
+    - node_modules/**
+    - src/**
