@@ -32,6 +32,17 @@ const buildUpdateUserParams = payload => {
   };
 };
 
+const buildUpdateUserAccountStatusParams = payload => {
+  return {
+    tableName: USERS_TABLE_NAME,
+    key: {
+      'id': payload.id
+    },
+    updateExpression: 'set info.accountStatus = :value',
+    expressionAttributeValues: {':value': payload.accountStatus}
+  };
+};
+
 const buildGetUsersByStatusParams = status => {
   return {
     tableName: USERS_TABLE_NAME,
@@ -63,5 +74,6 @@ module.exports = {
   buildGetUserByIdParams,
   buildUpdateUserParams,
   buildUserInfoObject,
-  buildGetUsersByStatusParams
+  buildGetUsersByStatusParams,
+  buildUpdateUserAccountStatusParams
 };
