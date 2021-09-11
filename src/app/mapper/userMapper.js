@@ -27,7 +27,7 @@ const buildUpdateUserParams = payload => {
     key: {
       'id': payload.id
     },
-    updateExpression: 'set info = :value',
+    updateExpression: 'set :value',
     expressionAttributeValues: {':value': payload.value}
   };
 };
@@ -60,11 +60,11 @@ const buildGetUsersByStatusParams = status => {
 const buildUserInfoObject = payload => {
   return {
     updatedAt: Date.now(),
-    addresses: payload.addresses || [],
-    matches: payload.matches || [],
-    phones: payload.phones || [],
-    adoptions: payload.adoptions || [],
-    accountStatus: payload.accountStatus || 'active'
+    addresses: payload.addresses,
+    matches: payload.matches,
+    phones: payload.phones,
+    adoptions: payload.adoptions,
+    accountStatus: payload.accountStatus
   };
 };
 
