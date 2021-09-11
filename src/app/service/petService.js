@@ -1,15 +1,18 @@
 const { putItem } = require('./../repository/clientRepository');
 const {
   buildPutItemsParams,
-  buildDeepScanParams
+  buildDeepScanParams,
+  buildGetParams
 } = require('./../mapper/clientMapper');
 const {
   buildPetObject,
   buildCreatePetParams,
-  buildGetPetsByStatusParams
+  buildGetPetsByStatusParams,
+  buildGetPetByIdParams
 } = require('./../mapper/petMapper');
 const {
-  deepScan
+  deepScan,
+  get
 } = require('./../repository/clientRepository');
 const createPet = async payload => {
   try {
@@ -60,9 +63,9 @@ const deletePet = async id => {
 
 const getPetById = async id => {
   try {
-    const response = {message: `GET /pet/${id}`};// await singupService(req.body);
+    const pet = await getPetByIdHandler(id);
 
-    return response;
+    return pet;
   } catch (error) {
     console.error(error);
     throw error;
@@ -75,6 +78,18 @@ const getPetsByStatus = async status => {
     const response = await deepScan(buildDeepScanParams(params));
 
     return response.Items;
+  } catch (error) {
+    console.log('AuthService -> getUserByEmail -> error -> ', error);
+    throw error;
+  }
+};
+
+const getPetByIdHandler = async payload => {
+  try {
+    const params = buildGetPetByIdParams(payload);
+    const response = await get(buildGetParams(params));
+
+    return response.Item;
   } catch (error) {
     console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
