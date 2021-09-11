@@ -6,6 +6,8 @@ const {
   deleteUser: deleteUserService,
   getUserById: getUserByIdService
 } = require('./../service/userService');
+const { serialize: userSerialize } = require('./../serializer/user/userSerializer');
+
 
 const getUser = async(req, res) => {
   try {
@@ -22,7 +24,7 @@ const updateUser = async(req, res) => {
   try {
     const response = await updateUserService(req.params.id, req.body);
 
-    return res.status(OK).json(response);
+    return res.status(OK).json(userSerialize(response));
   } catch (error) {
     console.error(error);
     return res.status(getStatusCode(error)).json(formatError(error));
