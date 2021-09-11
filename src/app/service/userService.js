@@ -1,4 +1,5 @@
 const { RequestError } = require('./../../helpers/errors');
+const { isUserIsActive } = require('./../../helpers/utlis');
 const {
   putItem,
   query,
@@ -133,8 +134,6 @@ const getUserByEmail = async payload => {
     throw error;
   }
 };
-
-const isUserIsActive = user => user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
 
 const getUsersByStatus = async status => {
   try {

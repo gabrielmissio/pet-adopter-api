@@ -53,10 +53,13 @@ const getDynamodbResponseError = requestResponse => requestResponse && requestRe
 
 const buildResponseMessage = message => ({ message });
 
+const isUserIsActive = user => user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
+
 module.exports = {
   deepScan,
   getDynamodbResponseError,
   buildResponseMessage,
   getStatusCode,
-  formatError
+  formatError,
+  isUserIsActive
 };
