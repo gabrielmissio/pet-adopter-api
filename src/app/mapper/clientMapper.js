@@ -64,10 +64,21 @@ const buildGetParams = payload => {
   };
 };
 
+
+const buildUpdateParams = payload => {
+  return {
+    TableName: payload.tableName,
+    Key: payload.key,
+    UpdateExpression: payload.updateExpression,
+    ExpressionAttributeValues: payload.expressionAttributeValues
+  };
+};
+
 module.exports = {
   buildScanParams,
   buildDeepScanParams,
   buildPutItemsParams,
   buildQueryParams,
-  buildGetParams
+  buildGetParams,
+  buildUpdateParams
 };
