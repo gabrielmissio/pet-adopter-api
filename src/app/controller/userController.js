@@ -1,9 +1,15 @@
 const { httpCodesEnums: { OK } } = require('./../../helpers/enums');
 const { formatError, getStatusCode } = require('./../../helpers/utlis');
+const {
+  getUsers: getUsersService,
+  updateUser: updateUserService,
+  deleteUser: deleteUserService,
+  getUserById: getUserByIdService
+} = require('./../service/userService');
 
 const getUser = async(req, res) => {
   try {
-    const response = {message: '/user GET'};// await singupService(req.body);
+    const response = await getUsersService(req.query);
 
     return res.status(OK).json(response);
   } catch (error) {
@@ -14,7 +20,7 @@ const getUser = async(req, res) => {
 
 const updateUser = async(req, res) => {
   try {
-    const response = {message: `PUT /user/${req.params.id}`};// await singupService(req.body);
+    const response = await updateUserService(req.body);
 
     return res.status(OK).json(response);
   } catch (error) {
@@ -25,7 +31,7 @@ const updateUser = async(req, res) => {
 
 const deleteUser = async(req, res) => {
   try {
-    const response = {message: `DELETE /user/${req.params.id}`};// await singupService(req.body);
+    const response = await deleteUserService(req.body);
 
     return res.status(OK).json(response);
   } catch (error) {
@@ -36,7 +42,7 @@ const deleteUser = async(req, res) => {
 
 const getUserById = async(req, res) => {
   try {
-    const response = {message: `GET /user/${req.params.id}`};// await singupService(req.body);
+    const response = await getUserByIdService(req.body);
 
     return res.status(OK).json(response);
   } catch (error) {
