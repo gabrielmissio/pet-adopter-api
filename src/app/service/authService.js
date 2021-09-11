@@ -3,19 +3,15 @@ const bcrypt = require('bcryptjs');
 const { SECRET } = require('./../../config');// TODO: get secret from parameter store
 const { isUserIsActive } = require('./../../helpers/utlis');
 const { RequestError } = require('./../../helpers/errors');
-const { putItem, query } = require('./../repository/clientRepository');
+const { putItem } = require('./../repository/clientRepository');
 const {  getUserByEmail } = require('./../service/userService');
 const {
-  buildPutItemsParams,
-  buildQueryParams
+  buildPutItemsParams
 } = require('./../mapper/clientMapper');
 const {
   buildAuthUserObject,
   buildCreateAuthUserParams
 } = require('./../mapper/authMapper');
-const {
-  buildGetUserByEmailParams
-} = require('./../mapper/userMapper');
 
 const {
   errorMessagesEnums: {
