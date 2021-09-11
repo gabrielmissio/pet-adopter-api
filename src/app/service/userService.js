@@ -57,7 +57,7 @@ const updateUser = async(id, payload) => {
 
     const user = buildUserInfoObject(payload);
     await update(buildUpdateParams(buildUpdateUserParams({id: id, value: user})));
-    // validate response
+    // TODO: validate response
 
     console.log(payload);
     return userToUpdate;
@@ -77,12 +77,16 @@ const deleteUser = async payload => {
   }
 };
 
-const getUserById = async payload => {
+const getUserById = async id => {
   try {
+    const user = await getUserByIdHandler(id);
+    if (!user) {
+      throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
 
-    return { payload };
+    return user;
   } catch (error) {
-    console.log(`UserService -> updateUser -> error -> ${JSON.stringify(error)}`);
+    console.log(`UserService -> getUserById -> error -> ${JSON.stringify(error)}`);
     throw error;
   }
 };

@@ -44,9 +44,9 @@ const deleteUser = async(req, res) => {
 
 const getUserById = async(req, res) => {
   try {
-    const response = await getUserByIdService(req.body);
+    const response = await getUserByIdService(req.params.id);
 
-    return res.status(OK).json(response);
+    return res.status(OK).json(userSerialize(response));
   } catch (error) {
     console.error(error);
     return res.status(getStatusCode(error)).json(formatError(error));
