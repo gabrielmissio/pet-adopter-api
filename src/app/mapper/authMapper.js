@@ -14,7 +14,8 @@ const buildAuthUserObject = payload => {
     name: payload.name,
     email: payload.email,
     password: payload.password,
-    createdAt: payload.createdAt || Date.now()
+    createdAt: payload.createdAt || Date.now(),
+    accountStatus: payload.accountStatus
   };
 };
 
