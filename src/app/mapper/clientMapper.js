@@ -56,9 +56,18 @@ const buildQueryParams = payload => {
     Limit: payload.limit
   };
 };
+
+const buildGetParams = payload => {
+  return {
+    TableName: payload.tableName,
+    Key: payload.key
+  };
+};
+
 module.exports = {
   buildScanParams,
   buildDeepScanParams,
   buildPutItemsParams,
-  buildQueryParams
+  buildQueryParams,
+  buildGetParams
 };
