@@ -36,7 +36,7 @@ const getPet = async(req, res) => {
 
 const updatePet = async(req, res) => {
   try {
-    const response = await updatePetService(req.params.id);
+    const response = await updatePetService(req.params.id, req.body);
 
     return res.status(OK).json(response);
   } catch (error) {
