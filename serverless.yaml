@@ -34,39 +34,62 @@ functions:
     handler: src/index.handler
     timeout: 30
     events:
-      - httpApi:
+      - http:
           path: /auth/signin
           method: POST
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /auth/signup
           method: POST
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /pet
           method: POST
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /pet
           method: GET
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /pet/{id}
           method: PUT
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /pet/{id}
           method: DELETE
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /pet/{id}
           method: GET
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /user
           method: GET
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /user/{id}
           method: PUT
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /user/{id}
           method: DELETE
-      - httpApi:
+          cors: 
+            origin: "*"
+      - http:
           path: /user/{id}
           method: GET
+          cors: 
+            origin: "*"
+
 package:
   exclude:
     - ./**
