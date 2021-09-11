@@ -1,6 +1,9 @@
 const { httpCodesEnums: { OK, CREATED } } = require('./../../helpers/enums');
 const { formatError, getStatusCode } = require('./../../helpers/utlis');
-const { serialize: petSerialize } = require('./../serializer/pet/petSerializer');
+const { 
+  serialize: petSerialize,
+  serializeList: petSerializeList
+} = require('./../serializer/pet/petSerializer');
 const {
   createPet: createPetService,
   getPet: getPetService,
@@ -24,7 +27,7 @@ const getPet = async(req, res) => {
   try {
     const response = await getPetService(req.query);
 
-    return res.status(OK).json(response);
+    return res.status(OK).json(petSerializeList(response));
   } catch (error) {
     console.error(error);
     return res.status(getStatusCode(error)).json(formatError(error));
