@@ -25,7 +25,18 @@ const buildCreatePetParams = payload => {
   };
 };
 
+const buildGetPetsByStatusParams = status => {
+  return {
+    tableName: PETS_TABLE_NAME,
+    filterExpression: "accountStatus = :value",
+    expressionAttributeValues: {
+        ':value': status
+    }
+  };
+};
+
 module.exports = {
   buildPetObject,
-  buildCreatePetParams
+  buildCreatePetParams,
+  buildGetPetsByStatusParams
 };
