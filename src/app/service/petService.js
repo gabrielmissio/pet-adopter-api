@@ -14,6 +14,9 @@ const {
   deepScan,
   get
 } = require('./../repository/clientRepository');
+
+const { mergeObjects } = require('./../../helpers/utlis')
+
 const createPet = async payload => {
   try {
     const pet = buildPetObject(payload);
@@ -40,10 +43,18 @@ const getPet = async payload => {
 
 const updatePet = async(id, payload) => {
   try {
-    const response = {message: `PUT /pet/${id}`};// await singupService(req.body);
-    console.log(payload);
-    
-    return response;
+    const petToUpdate = await getPetByIdHandler(id);
+    if (!petToUpdate) {
+      throw new RequestError('Pet not found', 404, 'NOT_FOUND');
+    }
+    payload.id = id;
+    payload.createdAt = petToUpdate.createdAt;
+    payload.matches = petToUpdate.matches;
+
+    const mergedObject = mergeObjects(petToUpdate, payload);
+    await createPet(mergedObject);// TODO: validate response
+
+    return mergedObject;    
   } catch (error) {
     console.error(error);
     throw error;
