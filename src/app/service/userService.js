@@ -1,15 +1,12 @@
 const { RequestError } = require('./../../helpers/errors');
 const { isUserIsActive } = require('./../../helpers/utlis');
 const {
-  putItem,
   query,
   deepScan,
-  scan,
   get,
   update
 } = require('./../repository/clientRepository');
 const {
-  buildPutItemsParams,
   buildQueryParams,
   buildGetParams,
   buildUpdateParams,
@@ -26,20 +23,14 @@ const {
 
 const {
   errorMessagesEnums: {
-    USER_ALREADY_EXISTS,
     USER_NOT_FOUND,
-    INVALID_CREDENTIALS,
     USER_WITH_INACTIVE_ACCOUNT
   },
   errorScopesEnums: {
-    INVALID_CREDENTIALS: INVALID_CREDENTIALS_SCOPE,
     NOT_FOUND: NOT_FOUND_SCOPE,
-    CONFLICT: CONFLICT_SCOPE,
     INACTIVE_ACCOUNT: INACTIVE_ACCOUNT_SCOPE
   },
   httpCodesEnums: {
-    CONFLICT: CONFLICT_CODE,
-    BAD_REQUEST: BAD_REQUEST_CODE,
     NOT_FOUND: NOT_FOUND_CODE,
     UNAUTHORIZED: UNAUTHORIZED_CODE
   }
