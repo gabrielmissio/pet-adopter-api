@@ -1,9 +1,20 @@
+const { putItem } = require('./../repository/clientRepository');
+const {
+  buildPutItemsParams
+} = require('./../mapper/clientMapper');
+const {
+  buildPetObject,
+  buildCreatePetParams
+} = require('./../mapper/petMapper');
+
+
 const createPet = async payload => {
   try {
-    const response = {message: '/pet POST'};// await singupService(req.body);
-    console.log(payload);
+    const pet = buildPetObject(payload);
+    const params = buildCreatePetParams(pet);
+    await putItem(buildPutItemsParams(params));// TODO: validate response
 
-    return response;
+    return pet;
   } catch (error) {
     console.error(error);
     throw error;
