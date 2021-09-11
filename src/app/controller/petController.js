@@ -38,7 +38,7 @@ const updatePet = async(req, res) => {
   try {
     const response = await updatePetService(req.params.id, req.body);
 
-    return res.status(OK).json(response);
+    return res.status(OK).json(petSerialize(response));
   } catch (error) {
     console.error(error);
     return res.status(getStatusCode(error)).json(formatError(error));
