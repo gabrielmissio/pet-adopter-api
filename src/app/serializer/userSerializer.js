@@ -1,6 +1,6 @@
-const serialize = ({ _id, name, email, createdAt }) => {
+const serialize = ({ id, name, email, createdAt }) => {
     return {
-      _id,
+      id,
       name,
       email,
       createdAt
