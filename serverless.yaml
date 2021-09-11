@@ -4,6 +4,8 @@ custom:
   params:
     usersTableName: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/users/name}
     usersTableArn: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/users/arn}
+    petsTableName: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/pets/name}
+    petsTableArn: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/pets/arn}
 
 provider:
   name: aws
@@ -12,6 +14,7 @@ provider:
   region: us-east-1
   environment:
     USERS_TABLE_NAME: ${self:custom.params.usersTableName}
+    PETS_TABLE_NAME: ${self:custom.params.petsTableName}
     SECRET: 'c7aaa047d2e72b49c602a8917faaca7f'
   iamRoleStatements:
     - Effect: 'Allow'
@@ -25,6 +28,7 @@ provider:
       Resource:
         - ${self:custom.params.usersTableArn}/*
         - ${self:custom.params.usersTableArn}
+        - ${self:custom.params.petsTableArn}
 
 plugins:
   - serverless-offline
