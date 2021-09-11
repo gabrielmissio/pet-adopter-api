@@ -36,7 +36,8 @@ const buildUserInfoObject = payload => {
   return {
     updatedAt: Date.now(),
     addresses: payload.addresses || [],
-    adptions: payload.adptions || []
+    adptions: payload.adptions || [],
+    phones: payload.phones || []
   };
 };
 
