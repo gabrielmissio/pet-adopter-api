@@ -9,7 +9,10 @@ const serialize = ({ id, name, email, createdAt, info }) => {
     info: infoSerializer(info)
   };
 };
-  
+
+const serializeList =  users => users.map(user => serialize(user));
+
 module.exports = {
-  serialize
+  serialize,
+  serializeList
 };
