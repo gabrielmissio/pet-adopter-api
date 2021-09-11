@@ -38,7 +38,21 @@ functions:
       - httpApi:
           path: /auth/signup
           method: POST
-
+      - httpApi:
+          path: /pet
+          method: POST
+      - httpApi:
+          path: /pet
+          method: GET
+      - httpApi:
+          path: /pet/{id}
+          method: PUT
+      - httpApi:
+          path: /pet/{id}
+          method: DELETE
+      - httpApi:
+          path: /pet/{id}
+          method: GET
 package:
   exclude:
     - ./**
