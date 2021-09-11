@@ -55,6 +55,18 @@ functions:
       - httpApi:
           path: /pet/{id}
           method: GET
+      - httpApi:
+          path: /user
+          method: GET
+      - httpApi:
+          path: /user/{id}
+          method: PUT
+      - httpApi:
+          path: /user/{id}
+          method: DELETE
+      - httpApi:
+          path: /user/{id}
+          method: GET
 package:
   exclude:
     - ./**
