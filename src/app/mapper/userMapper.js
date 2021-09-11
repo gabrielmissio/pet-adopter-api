@@ -32,6 +32,20 @@ const buildUpdateUserParams = payload => {
   };
 };
 
+const buildGetUsersByStatusParams = status => {
+  return {
+    tableName: USERS_TABLE_NAME,
+    filterExpression: "#info.#accountStatus = :value",
+    expressionAttributeNames: {
+        '#info': 'info',
+        "#accountStatus": "accountStatus"
+    },
+    expressionAttributeValues: {
+        ':value': status
+    }
+  };
+};
+
 const buildUserInfoObject = payload => {
   return {
     updatedAt: Date.now(),
@@ -39,7 +53,7 @@ const buildUserInfoObject = payload => {
     matches: payload.matches || [],
     phones: payload.phones || [],
     adoptions: payload.adoptions || [],
-    status: payload.status || 'active'
+    accountStatus: payload.accountStatus || 'active'
   };
 };
 
@@ -48,5 +62,6 @@ module.exports = {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
-  buildUserInfoObject
+  buildUserInfoObject,
+  buildGetUsersByStatusParams
 };
