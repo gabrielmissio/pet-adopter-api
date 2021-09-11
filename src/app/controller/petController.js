@@ -1,9 +1,16 @@
 const { httpCodesEnums: { OK, CREATED } } = require('./../../helpers/enums');
 const { formatError, getStatusCode } = require('./../../helpers/utlis');
+const {
+  createPet: createPetService,
+  getPet: getPetService,
+  updatePet: updatePetService,
+  deletePet: deletePetService,
+  getPetById: getPetByIdService
+} = require('./../service/petService');
 
 const createPet = async(req, res) => {
   try {
-    const response = {message: '/pet POST'};// await singupService(req.body);
+    const response = await createPetService(req.body);
 
     return res.status(CREATED).json(response);
   } catch (error) {
@@ -14,7 +21,7 @@ const createPet = async(req, res) => {
 
 const getPet = async(req, res) => {
   try {
-    const response = {message: '/pet GET'};// await singupService(req.body);
+    const response = await getPetService(req.query);
 
     return res.status(OK).json(response);
   } catch (error) {
@@ -25,7 +32,7 @@ const getPet = async(req, res) => {
 
 const updatePet = async(req, res) => {
   try {
-    const response = {message: `PUT /pet/${req.params.id}`};// await singupService(req.body);
+    const response = await updatePetService(req.params.id);
 
     return res.status(OK).json(response);
   } catch (error) {
@@ -36,7 +43,7 @@ const updatePet = async(req, res) => {
 
 const deletePet = async(req, res) => {
   try {
-    const response = {message: `DELETE /pet/${req.params.id}`};// await singupService(req.body);
+    const response = await deletePetService(req.params.id);
 
     return res.status(OK).json(response);
   } catch (error) {
@@ -47,7 +54,7 @@ const deletePet = async(req, res) => {
 
 const getPetById = async(req, res) => {
   try {
-    const response = {message: `GET /pet/${req.params.id}`};// await singupService(req.body);
+    const response = await getPetByIdService(req.params.id);
 
     return res.status(OK).json(response);
   } catch (error) {
