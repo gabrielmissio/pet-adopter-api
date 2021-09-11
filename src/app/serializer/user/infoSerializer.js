@@ -1,16 +1,18 @@
 const { serializeList: addreddSerializerList } = require('./addressSerializer');
 const { serializeList: adoptionSerializerList } = require('./adoptionSerializer');
 const { serializeList: phoneSerializerList } = require('./phoneSerializer');
+const { serializeList: matchSerializerList } = require('./matchSerializer');
 
-const serialize = ({ updatedAt, addresses, phones, adoptions }) => {
+const serialize = ({ updatedAt, addresses, phones, matches, adoptions }) => {
   return {
     updatedAt,
     addresses: addreddSerializerList(addresses),
     phones: phoneSerializerList(phones),
-    adoptions: adoptionSerializerList(adoptions || [])
+    matches: matchSerializerList(matches),
+    adoptions: adoptionSerializerList(adoptions)
   };
 };
-  
+
 module.exports = {
   serialize
 };
