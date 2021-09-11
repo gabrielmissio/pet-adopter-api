@@ -44,6 +44,7 @@ const singup = async payload => {
 
     const user = buildAuthUserObject(payload);
     user.password = await bcrypt.hash(user.password, 10);
+    user.accountStatus = 'active';
     // const response =  await putItem(buildPutItemsParams(buildCreateAuthUserParams(user)));
     await putItem(buildPutItemsParams(buildCreateAuthUserParams(user)));
     // validate response
