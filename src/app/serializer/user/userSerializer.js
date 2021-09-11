@@ -1,12 +1,33 @@
-const { serialize: infoSerializer } = require('./infoSerializer');
+const { serializeList: addreddSerializerList } = require('./addressSerializer');
+const { serializeList: adoptionSerializerList } = require('./adoptionSerializer');
+const { serializeList: phoneSerializerList } = require('./phoneSerializer');
+const { serializeList: matchSerializerList } = require('./matchSerializer');
 
-const serialize = ({ id, name, email, createdAt, info }) => {
+const serialize = ({
+  id,
+  name,
+  email,
+  accountStatus,
+  createdAt,
+  updatedAt,
+  addresses,
+  phones,
+  adoptions,
+  matches
+  
+  
+}) => {
   return {
     id,
     name,
     email,
+    accountStatus,
     createdAt,
-    info: infoSerializer(info)
+    updatedAt,
+    addresses: addreddSerializerList(addresses || []),
+    phones: phoneSerializerList(phones || []),
+    adoptions: adoptionSerializerList(adoptions || []),
+    matches: matchSerializerList(matches || [])
   };
 };
 
