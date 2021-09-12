@@ -1,5 +1,4 @@
 const { httpCodesEnums: { OK } } = require('./../../helpers/enums');
-const { formatError, getStatusCode } = require('./../../helpers/utlis');
 const {
   getUsers: getUsersService,
   updateUser: updateUserService,
@@ -11,54 +10,64 @@ const {
   serializeList: userSerializeList
 } = require('./../serializer/user/userSerializer');
 
+const BaseController = require('./baseController');
 
-const getUser = async(req, res) => {
-  try {
-    const response = await getUsersService(req.query);
-
-    return res.status(OK).json(userSerializeList(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+class AuthController extends BaseController {
+  constructor() {
   }
-};
 
-const updateUser = async(req, res) => {
-  try {
-    const response = await updateUserService(req.params.id, req.body);
-
-    return res.status(OK).json(userSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async getUser(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: getUsersService,
+        httpCode: OK,
+        type: 'query',
+        serializer: userSerializeList
+      }
+    )
   }
-};
 
-const deleteUser = async(req, res) => {
-  try {
-    const response = await deleteUserService(req.params.id);
-
-    return res.status(OK).json(response);
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async updateUser(req, res) {
+    req.body.id = req.params.id;
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: updateUserService,
+        httpCode: OK,
+        type: 'body',
+        serializer: userSerialize
+      }
+    )
   }
-};
 
-const getUserById = async(req, res) => {
-  try {
-    const response = await getUserByIdService(req.params.id);
-
-    return res.status(OK).json(userSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async deleteUser(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: deleteUserService,
+        httpCode: OK,
+        type: 'params',
+        serializer: null
+      }
+    )
   }
-};
 
-module.exports = {
-  getUser,
-  updateUser,
-  deleteUser,
-  getUserById
-};
+  static async getUserById(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: getUserByIdService,
+        httpCode: OK,
+        type: 'params',
+        serializer: userSerialize
+      }
+    )
+  }
+}
+
+module.exports = AuthController;

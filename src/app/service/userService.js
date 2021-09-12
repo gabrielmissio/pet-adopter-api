@@ -29,9 +29,9 @@ const getUsers = async payload => {
   }
 };
 
-const updateUser = async(id, payload) => {
+const updateUser = async payload => {
   try {
-    const userToUpdate = await UserRepository.getById(id);
+    const userToUpdate = await UserRepository.getById(payload.id);
     if (!userToUpdate) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -39,8 +39,6 @@ const updateUser = async(id, payload) => {
     if (!isAccountActive(userToUpdate)) {
       throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
-
-    payload.id = id;
     payload.createdAt = userToUpdate.createdAt;
     payload.matches = userToUpdate.matches;
     payload.password = userToUpdate.password;// TODO: remove this shit
@@ -55,9 +53,9 @@ const updateUser = async(id, payload) => {
   }
 };
 
-const deleteUser = async id => {
+const deleteUser = async payload => {
   try {
-    const user = await UserRepository.getById(id);
+    const user = await UserRepository.getById(payload.id);
     if (!user) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -66,7 +64,7 @@ const deleteUser = async id => {
       throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
     
-    const response = await UserRepository.disableAccountById(id);
+    const response = await UserRepository.disableAccountById(payload.id);
     
 
     return response;
@@ -76,9 +74,9 @@ const deleteUser = async id => {
   }
 };
 
-const getUserById = async id => {
+const getUserById = async payload => {
   try {
-    const user = await UserRepository.getById(id);
+    const user = await UserRepository.getById(payload.id);
     if (!user) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
