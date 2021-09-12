@@ -5,9 +5,7 @@ class MembersRepository extends BaseRepository {
     super(entity, tableName); // call the super class constructor and pass in the name parameter
   }
 
-  async changeAccountStatus(id, accountStatus) {
-    const { buildUpdateParams } = require('./../mapper/clientMapper');
-    
+  async changeAccountStatus(id, accountStatus) {    
     const params = {
       tableName: this.tableName,
       key: {
@@ -17,7 +15,7 @@ class MembersRepository extends BaseRepository {
       expressionAttributeValues: {':value': accountStatus}
     };
 
-    return this.db.update(buildUpdateParams(params));
+    return this.db.update(params);
   }
 
   async disableAccountById(id) {
@@ -29,8 +27,6 @@ class MembersRepository extends BaseRepository {
   }
 
   async getByAccountStatus(status) {
-    const { buildDeepScanParams } = require('./../mapper/clientMapper');
-
     const params = {
       tableName: this.tableName,
       filterExpression: 'accountStatus = :value',
@@ -39,7 +35,7 @@ class MembersRepository extends BaseRepository {
       }
     };
   
-    const response = await this.db.deepScan(buildDeepScanParams(params));
+    const response = await this.db.deepScan(params);
     return response.Items;
   }
 };

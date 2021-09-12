@@ -8,8 +8,6 @@ class UserRepository extends MembersRepository {
   }
 
   async getUserByEmail(email) {
-    const { buildQueryParams } = require('./../mapper/clientMapper');
-
     const params = {
       tableName: USERS_TABLE_NAME,
       indexName: 'emailIndex',
@@ -20,7 +18,7 @@ class UserRepository extends MembersRepository {
       Limit: 1
     };
 
-    const response = await this.db.query(buildQueryParams(params));
+    const response = await this.db.query(params);
     return response.Items[0];
   }
 

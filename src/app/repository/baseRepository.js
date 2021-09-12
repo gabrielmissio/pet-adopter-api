@@ -7,8 +7,6 @@ class BaseRepository {
   }
 
   async getById(id) {
-    const { buildGetParams } = require('./../mapper/clientMapper');
-
     const params = {
       tableName: this.tableName,
       key: {
@@ -16,24 +14,20 @@ class BaseRepository {
       }
     };
 
-    const response = await this.db.get(buildGetParams(params));
+    const response = await this.db.get(params);
     return response.Item;
   }
 
   async create(payload) {
-    const { buildPutItemsParams } = require('./../mapper/clientMapper');
-
     const params = {
       tableName: this.tableName,
       item: payload
     };
   
-    return this.db.putItem(buildPutItemsParams(params));
+    return this.db.putItem(params);
   }
 
-  async changeAccountStatus(id, accountStatus) {
-    const { buildUpdateParams } = require('./../mapper/clientMapper');
-    
+  async changeAccountStatus(id, accountStatus) {    
     const params = {
       tableName: this.tableName,
       key: {
@@ -43,7 +37,7 @@ class BaseRepository {
       expressionAttributeValues: {':value': accountStatus}
     };
 
-    return this.db.update(buildUpdateParams(params));
+    return this.db.update(params);
   }
 
   async disableAccountById(id) {
@@ -55,7 +49,6 @@ class BaseRepository {
   }
 
   async getByAccountStatus(status) {
-    const { buildDeepScanParams } = require('./../mapper/clientMapper');
 
     const params = {
       tableName: this.tableName,
@@ -65,7 +58,7 @@ class BaseRepository {
       }
     };
   
-    const response = await this.db.deepScan(buildDeepScanParams(params));
+    const response = await this.db.deepScan(params);
     return response.Items;
   }
 };
