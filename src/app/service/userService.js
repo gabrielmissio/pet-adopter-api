@@ -85,7 +85,7 @@ const deleteUser = async id => {
       throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
     
-    const response = await deleteUserById(id);
+    const response = await UserRepository.disableAccountById(id);
     
 
     return response;

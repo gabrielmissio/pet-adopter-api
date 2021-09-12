@@ -127,8 +127,7 @@ const getPetsByStatus = async status => {
 
 const deletePetById = async id => {
   try {
-    const params = buildUpdatePetAccountStatusParams({ id: id, accountStatus: 'inactive' });
-    const response = await update(buildUpdateParams(params));
+    const response = await PetRepository.disableAccountById(id);
 
     return response;// TODO: validate response
   } catch (error) {
