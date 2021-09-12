@@ -4,17 +4,20 @@ const { RequestError } = require('./../../helpers/errors');
 const {
   buildPutItemsParams,
   buildDeepScanParams,
-  buildGetParams
+  buildGetParams,
+  buildUpdateParams
 } = require('./../mapper/clientMapper');
 const {
   buildPetObject,
   buildCreatePetParams,
   buildGetPetsByStatusParams,
-  buildGetPetByIdParams
+  buildGetPetByIdParams,
+  buildUpdatePetAccountStatusParams
 } = require('./../mapper/petMapper');
 const {
   deepScan,
-  get
+  get,
+  update
 } = require('./../repository/clientRepository');
 
 const {
@@ -83,7 +86,8 @@ const deletePet = async id => {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
-    const response = {message: `DELETE /pet/${id}`};// await singupService(req.body);
+    // TODO: add validate
+    const response = await deletePetById(id);
 
     return response;
   } catch (error) {
@@ -124,6 +128,18 @@ const getPetByIdHandler = async payload => {
     const response = await get(buildGetParams(params));
 
     return response.Item;
+  } catch (error) {
+    console.log('AuthService -> getUserByEmail -> error -> ', error);
+    throw error;
+  }
+};
+
+const deletePetById = async id => {
+  try {
+    const params = buildUpdatePetAccountStatusParams({ id: id, accountStatus: 'inactive' });
+    const response = await update(buildUpdateParams(params));
+
+    return response;// TODO: validate response
   } catch (error) {
     console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
