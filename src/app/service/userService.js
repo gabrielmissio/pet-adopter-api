@@ -66,7 +66,7 @@ const updateUser = async(id, payload) => {
     const mergedObject = mergeObjects(userToUpdate, payload);
     
     // TODO: validate response
-    await putItem(buildPutItemsParams(buildCreateUserParams(mergedObject)));
+    await UserRepository.create(mergedObject);
     return mergedObject;
   } catch (error) {
     console.log(`UserService -> updateUser -> error -> ${JSON.stringify(error)}`);
@@ -74,7 +74,7 @@ const updateUser = async(id, payload) => {
   }
 };
 
-const deleteUser = async id => { // TODO: implement deleteUserById
+const deleteUser = async id => {
   try {
     const user = await UserRepository.getById(id);
     if (!user) {

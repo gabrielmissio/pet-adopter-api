@@ -13,6 +13,7 @@ const {
 } = require('./../mapper/userMapper');
 
 const User = require('./../../models/user');
+const UserRepository = require('./../repository/userRepository');
 
 const {
   errorMessagesEnums: {
@@ -47,7 +48,7 @@ const singup = async payload => {
     user.password = await bcrypt.hash(user.password, 10);
     user.accountStatus = 'active';
     // const response =  await putItem(buildPutItemsParams(buildCreateUserParams(user)));
-    await putItem(buildPutItemsParams(buildCreateUserParams(user)));
+    await UserRepository.create(user);
     // validate response
 
     const token = generateToken({ id: user.id });
