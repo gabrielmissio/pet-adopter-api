@@ -1,9 +1,8 @@
 const User = require('./../../models/user');
-const BaseRepository = require('./baseRepository');
+const MembersRepository = require('./membersRepository');
 const { USERS_TABLE_NAME } = require('./../../config');
-const { query } = require('./../../database');
 
-class UserRepository extends BaseRepository {
+class UserRepository extends MembersRepository {
   constructor() {
     super(User, USERS_TABLE_NAME); // call the super class constructor and pass in the name parameter
   }
@@ -21,7 +20,7 @@ class UserRepository extends BaseRepository {
       Limit: 1
     };
 
-    const response = await query(buildQueryParams(params));
+    const response = await this.db.query(buildQueryParams(params));
     return response.Items[0];
   }
 
