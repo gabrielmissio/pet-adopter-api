@@ -19,7 +19,6 @@ const {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
-  buildUserObject,
   buildGetUsersByStatusParams,
   buildUpdateUserAccountStatusParams,
   buildCreateUserParams

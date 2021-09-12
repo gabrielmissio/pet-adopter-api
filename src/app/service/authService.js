@@ -9,9 +9,10 @@ const {
   buildPutItemsParams
 } = require('./../mapper/clientMapper');
 const {
-  buildUserObject,
   buildCreateUserParams
 } = require('./../mapper/userMapper');
+
+const User = require('./../../models/user');
 
 const {
   errorMessagesEnums: {
@@ -42,7 +43,7 @@ const singup = async payload => {
       throw new RequestError(USER_ALREADY_EXISTS, CONFLICT_CODE, CONFLICT_SCOPE);
     }
 
-    const user = buildUserObject(payload);
+    const user = new User(payload);
     user.password = await bcrypt.hash(user.password, 10);
     user.accountStatus = 'active';
     // const response =  await putItem(buildPutItemsParams(buildCreateUserParams(user)));

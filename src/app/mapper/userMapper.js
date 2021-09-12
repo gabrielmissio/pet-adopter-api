@@ -1,5 +1,4 @@
 const { USERS_TABLE_NAME } = require('./../../config');
-const { v4: uuid } = require('uuid');
 const { buildUpdatAccountStatusParams } = require('./commonMapper');
 
 const buildGetUserByEmailParams = payload => {
@@ -44,22 +43,6 @@ const buildGetUsersByStatusParams = status => {
   };
 };
 
-const buildUserObject = payload => {
-  return {
-    id: payload.id || uuid(),
-    name: payload.name,
-    email: payload.email,
-    password: payload.password,
-    accountStatus: payload.accountStatus,
-    createdAt: payload.createdAt || Date.now(),
-    updatedAt: Date.now(),
-    addresses: payload.addresses || [],
-    matches: payload.matches || [],
-    phones: payload.phones || [],
-    adoptions: payload.adoptions || [],
-  };
-};
-
 const buildCreateUserParams = payload => {
   return {
     tableName: USERS_TABLE_NAME,
@@ -76,7 +59,6 @@ module.exports = {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
-  buildUserObject,
   buildGetUsersByStatusParams,
   buildCreateUserParams,
   buildUpdateUserAccountStatusParams
