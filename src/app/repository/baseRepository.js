@@ -1,3 +1,9 @@
+const {
+  get,
+  putItem,
+  update,
+  deepScan
+} = require('./../../database');
 
 class BaseRepository {
   constructor(entity, tableName) {
@@ -7,7 +13,6 @@ class BaseRepository {
 
   async getById(id) {
     const { buildGetParams } = require('./../mapper/clientMapper');
-    const { get } = require('./clientRepository');
 
     const params = {
       tableName: this.tableName,
@@ -22,7 +27,6 @@ class BaseRepository {
 
   async create(payload) {
     const { buildPutItemsParams } = require('./../mapper/clientMapper');
-    const { putItem } = require('./clientRepository');
 
     const params = {
       tableName: this.tableName,
@@ -34,7 +38,6 @@ class BaseRepository {
 
   async changeAccountStatus(id, accountStatus) {
     const { buildUpdateParams } = require('./../mapper/clientMapper');
-    const { update } = require('./clientRepository');
     
     const params = {
       tableName: this.tableName,
@@ -58,7 +61,6 @@ class BaseRepository {
 
   async getByAccountStatus(status) {
     const { buildDeepScanParams } = require('./../mapper/clientMapper');
-    const { deepScan } = require('./clientRepository');
 
     const params = {
       tableName: this.tableName,

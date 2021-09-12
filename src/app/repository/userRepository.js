@@ -1,6 +1,7 @@
 const User = require('./../../models/user');
 const BaseRepository = require('./baseRepository');
 const { USERS_TABLE_NAME } = require('./../../config');
+const { query } = require('./../../database');
 
 class UserRepository extends BaseRepository {
   constructor() {
@@ -9,7 +10,6 @@ class UserRepository extends BaseRepository {
 
   async getUserByEmail(email) {
     const { buildQueryParams } = require('./../mapper/clientMapper');
-    const { query } = require('./clientRepository');
 
     const params = {
       tableName: USERS_TABLE_NAME,
