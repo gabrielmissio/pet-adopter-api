@@ -38,6 +38,8 @@ const {
   }
 } = require('./../../helpers/enums');
 
+const UserRepository = require('./../repository/userRepository');
+
 const getUsers = async payload => {
   try {
     const users = await getUsersByStatus(payload.accountStatus);
@@ -94,7 +96,7 @@ const deleteUser = async id => { // TODO: implement deleteUserById
 
 const getUserById = async id => {
   try {
-    const user = await getUserByIdHandler(id);
+    const user = await UserRepository.getById(id);
     if (!user) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
