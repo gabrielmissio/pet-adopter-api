@@ -1,14 +1,9 @@
-const {
-  get,
-  putItem,
-  update,
-  deepScan
-} = require('./../../database');
-
+const db = require('./../../database');
 class BaseRepository {
   constructor(entity, tableName) {
     this.entity = entity;
     this.tableName = tableName;
+    this.db = db;
   }
 
   async getById(id) {
@@ -21,7 +16,7 @@ class BaseRepository {
       }
     };
 
-    const response = await get(buildGetParams(params));
+    const response = await this.db.get(buildGetParams(params));
     return response.Item;
   }
 
@@ -33,7 +28,7 @@ class BaseRepository {
       item: payload
     };
   
-    return putItem(buildPutItemsParams(params));
+    return this.db.putItem(buildPutItemsParams(params));
   }
 
   async changeAccountStatus(id, accountStatus) {
@@ -48,7 +43,7 @@ class BaseRepository {
       expressionAttributeValues: {':value': accountStatus}
     };
 
-    return update(buildUpdateParams(params));
+    return this.db.update(buildUpdateParams(params));
   }
 
   async disableAccountById(id) {
@@ -70,7 +65,7 @@ class BaseRepository {
       }
     };
   
-    const response = await deepScan(buildDeepScanParams(params));
+    const response = await this.db.deepScan(buildDeepScanParams(params));
     return response.Items;
   }
 };
