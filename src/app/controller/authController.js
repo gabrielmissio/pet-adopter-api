@@ -1,31 +1,37 @@
 const { httpCodesEnums: { OK, CREATED } } = require('./../../helpers/enums');
 const { singin: signinService, singup: singupService } = require('./../service/authService');
-const { formatError, getStatusCode } = require('./../../helpers/utlis');
 const { serialize: sessionSerialize } = require('./../serializer/auth/sessionSerializer');
+const BaseController = require('./baseController');
 
-const singup = async(req, res) => {
-  try {
-    const response = await singupService(req.body);
-
-    return res.status(CREATED).json(sessionSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+class AuthController extends BaseController {
+  constructor() {
   }
-};
 
-const singin = async(req, res) => {
-  try {
-    const response = await signinService(req.body);
-
-    return res.status(OK).json(sessionSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async singup(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: singupService,
+        httpCode: CREATED,
+        type: 'body',
+        serializer: sessionSerialize
+      }
+    )
   }
-};
 
-module.exports = {
-  singup,
-  singin
-};
+  static async singin(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: signinService,
+        httpCode: OK,
+        type: 'body',
+        serializer: sessionSerialize
+      }
+    )
+  }
+}
+
+module.exports = AuthController;
