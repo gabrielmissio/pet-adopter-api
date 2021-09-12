@@ -93,6 +93,16 @@ functions:
           method: GET
           cors: 
             origin: "*"
+      - http:
+          path: /match
+          method: POST
+          cors: 
+            origin: "*"
+      - http:
+          path: /match/check
+          method: POST
+          cors: 
+            origin: "*"
 
 package:
   exclude:
