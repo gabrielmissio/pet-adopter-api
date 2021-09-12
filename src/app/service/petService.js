@@ -9,7 +9,6 @@ const {
   buildUpdateParams
 } = require('./../mapper/clientMapper');
 const {
-  buildPetObject,
   buildCreatePetParams,
   buildGetPetsByStatusParams,
   buildGetPetByIdParams,
@@ -20,6 +19,7 @@ const {
   get,
   update
 } = require('./../repository/clientRepository');
+const Pet = require('./../../models/pet');
 
 const {
   errorMessagesEnums: {
@@ -40,7 +40,7 @@ const {
 const createPet = async payload => {
   try {
     payload.accountStatus = 'active';
-    const pet = buildPetObject(payload);
+    const pet = new Pet(payload);
     const params = buildCreatePetParams(pet);
     await putItem(buildPutItemsParams(params));// TODO: validate response
 
