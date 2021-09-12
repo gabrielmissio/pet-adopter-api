@@ -55,6 +55,22 @@ class BaseRepository {
   async enableAccountById(id) {
     return this.changeAccountStatus(id, 'inactive');
   }
+
+  async getByAccountStatus(status) {
+    const { buildDeepScanParams } = require('./../mapper/clientMapper');
+    const { deepScan } = require('./clientRepository');
+
+    const params = {
+      tableName: this.tableName,
+      filterExpression: 'accountStatus = :value',
+      expressionAttributeValues: {
+          ':value': status
+      }
+    };
+  
+    const response = await deepScan(buildDeepScanParams(params));
+    return response.Items;
+  }
 };
 
 module.exports = BaseRepository;
