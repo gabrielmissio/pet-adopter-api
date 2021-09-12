@@ -1,25 +1,8 @@
 const { mergeObjects } = require('./../../helpers/utlis')
 const { RequestError } = require('./../../helpers/errors');
 const { isAccountActive } = require('./../../helpers/utlis');
-const {
-  query,
-  deepScan,
-  update,
-  putItem
-} = require('./../repository/clientRepository');
-const {
-  buildQueryParams,
-  buildUpdateParams,
-  buildDeepScanParams,
-  buildPutItemsParams
-} = require('./../mapper/clientMapper');
-const {
-  buildGetUserByEmailParams,
-  buildUpdateUserParams,
-  buildGetUsersByStatusParams,
-  buildUpdateUserAccountStatusParams,
-  buildCreateUserParams
-} = require('./../mapper/userMapper');
+const UserRepository = require('./../repository/userRepository');
+
 const {
   errorMessagesEnums: {
     USER_NOT_FOUND,
@@ -35,11 +18,9 @@ const {
   }
 } = require('./../../helpers/enums');
 
-const UserRepository = require('./../repository/userRepository');
-
 const getUsers = async payload => {
   try {
-    const users = await getUsersByStatus(payload.accountStatus);
+    const users = await UserRepository.getByAccountStatus(payload.accountStatus);
 
     return users;
   } catch (error) {
@@ -105,30 +86,6 @@ const getUserById = async id => {
     return user;
   } catch (error) {
     console.log(`UserService -> getUserById -> error -> ${JSON.stringify(error)}`);
-    throw error;
-  }
-};
-
-const deleteUserById = async id => {
-  try {
-    const params = buildUpdateUserAccountStatusParams({ id: id, accountStatus: 'inactive' });
-    const response = await update(buildUpdateParams(params));
-
-    return response;// TODO: validate response
-  } catch (error) {
-    console.log('AuthService -> getUserByEmail -> error -> ', error);
-    throw error;
-  }
-};
-
-const getUsersByStatus = async status => {
-  try {
-    const params = buildGetUsersByStatusParams(status);
-    const response = await deepScan(buildDeepScanParams(params));
-
-    return response.Items;
-  } catch (error) {
-    console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
   }
 };
