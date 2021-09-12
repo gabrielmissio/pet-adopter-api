@@ -1,5 +1,6 @@
 const { USERS_TABLE_NAME } = require('./../../config');
 const { v4: uuid } = require('uuid');
+const { buildUpdatAccountStatusParams } = require('./commonMapper');
 
 const buildGetUserByEmailParams = payload => {
   return {
@@ -30,17 +31,6 @@ const buildUpdateUserParams = payload => {
     },
     updateExpression: 'set :value',
     expressionAttributeValues: {':value': payload.value}
-  };
-};
-
-const buildUpdateUserAccountStatusParams = payload => {
-  return {
-    tableName: USERS_TABLE_NAME,
-    key: {
-      'id': payload.id
-    },
-    updateExpression: 'set accountStatus = :value',
-    expressionAttributeValues: {':value': payload.accountStatus}
   };
 };
 
@@ -77,12 +67,17 @@ const buildCreateUserParams = payload => {
   };
 };
 
+const buildUpdateUserAccountStatusParams = payload => {
+  payload.tableName = USERS_TABLE_NAME;
+  return buildUpdatAccountStatusParams(payload);
+};
+
 module.exports = {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
   buildUserObject,
   buildGetUsersByStatusParams,
-  buildUpdateUserAccountStatusParams,
-  buildCreateUserParams
+  buildCreateUserParams,
+  buildUpdateUserAccountStatusParams
 };
