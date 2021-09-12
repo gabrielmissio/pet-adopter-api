@@ -3,20 +3,15 @@ const { RequestError } = require('./../../helpers/errors');
 const { isAccountActive } = require('./../../helpers/utlis');
 const { putItem } = require('./../repository/clientRepository');
 const {
-  buildPutItemsParams,
   buildDeepScanParams,
-  buildGetParams,
   buildUpdateParams
 } = require('./../mapper/clientMapper');
 const {
-  buildCreatePetParams,
   buildGetPetsByStatusParams,
-  buildGetPetByIdParams,
   buildUpdatePetAccountStatusParams
 } = require('./../mapper/petMapper');
 const {
   deepScan,
-  get,
   update
 } = require('./../repository/clientRepository');
 const Pet = require('./../../models/pet');
@@ -42,8 +37,7 @@ const createPet = async payload => {
   try {
     payload.accountStatus = 'active';
     const pet = new Pet(payload);
-    const params = buildCreatePetParams(pet);
-    await putItem(buildPutItemsParams(params));// TODO: validate response
+    await PetRepository.create(pet);
 
     return pet;
   } catch (error) {
