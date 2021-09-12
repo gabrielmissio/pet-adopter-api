@@ -121,19 +121,6 @@ const deleteUserById = async id => {
   }
 };
 
-
-const getUserByEmail = async payload => {
-  try {
-    const params = buildGetUserByEmailParams(payload);
-    const response = await query(buildQueryParams(params));
-
-    return response.Items[0];
-  } catch (error) {
-    console.log('AuthService -> getUserByEmail -> error -> ', error);
-    throw error;
-  }
-};
-
 const getUsersByStatus = async status => {
   try {
     const params = buildGetUsersByStatusParams(status);
@@ -150,6 +137,5 @@ module.exports = {
   getUsers,
   updateUser,
   deleteUser,
-  getUserById,
-  getUserByEmail
+  getUserById
 };

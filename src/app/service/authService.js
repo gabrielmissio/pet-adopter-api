@@ -3,14 +3,6 @@ const bcrypt = require('bcryptjs');
 const { SECRET } = require('./../../config');// TODO: get secret from parameter store
 const { isAccountActive } = require('./../../helpers/utlis');
 const { RequestError } = require('./../../helpers/errors');
-const { putItem } = require('./../repository/clientRepository');
-const {  getUserByEmail } = require('./../service/userService');
-const {
-  buildPutItemsParams
-} = require('./../mapper/clientMapper');
-const {
-  buildCreateUserParams
-} = require('./../mapper/userMapper');
 
 const User = require('./../../models/user');
 const UserRepository = require('./../repository/userRepository');
@@ -38,7 +30,7 @@ const {
 
 const singup = async payload => {
   try {
-    const existingUser = await getUserByEmail(payload);
+    const existingUser = await UserRepository.getUserByEmail(payload.email);
     
     if (existingUser) {
       throw new RequestError(USER_ALREADY_EXISTS, CONFLICT_CODE, CONFLICT_SCOPE);
@@ -62,7 +54,7 @@ const singup = async payload => {
 
 const singin = async payload => {
   try {
-    const user = await getUserByEmail(payload);
+    const user = await UserRepository.getUserByEmail(payload.email);
     
     if (!user) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
