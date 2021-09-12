@@ -1,5 +1,4 @@
 const { httpCodesEnums: { OK, CREATED } } = require('./../../helpers/enums');
-const { formatError, getStatusCode } = require('./../../helpers/utlis');
 const { 
   serialize: petSerialize,
   serializeList: petSerializeList
@@ -11,66 +10,78 @@ const {
   deletePet: deletePetService,
   getPetById: getPetByIdService
 } = require('./../service/petService');
+const BaseController = require('./baseController');
 
-const createPet = async(req, res) => {
-  try {
-    const response = await createPetService(req.body);
-
-    return res.status(CREATED).json(petSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+class PetController extends BaseController {
+  constructor() {
   }
-};
 
-const getPet = async(req, res) => {
-  try {
-    const response = await getPetService(req.query);
-
-    return res.status(OK).json(petSerializeList(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async createPet(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: createPetService,
+        httpCode: CREATED,
+        type: 'body',
+        serializer: petSerialize
+      }
+    )
   }
-};
 
-const updatePet = async(req, res) => {
-  try {
-    const response = await updatePetService(req.params.id, req.body);
-
-    return res.status(OK).json(petSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async getPet(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: getPetService,
+        httpCode: OK,
+        type: 'query',
+        serializer: petSerializeList
+      }
+    )
   }
-};
 
-const deletePet = async(req, res) => {
-  try {
-    const response = await deletePetService(req.params.id);
-
-    return res.status(OK).json(response);
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async updatePet(req, res) {
+    req.body.id = req.params.id;
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: updatePetService,
+        httpCode: OK,
+        type: 'body',// update also in petService
+        serializer: petSerialize
+      }
+    )
   }
-};
 
-const getPetById = async(req, res) => {
-  try {
-    const response = await getPetByIdService(req.params.id);
-
-    return res.status(OK).json(petSerialize(response));
-  } catch (error) {
-    console.error(error);
-    return res.status(getStatusCode(error)).json(formatError(error));
+  static async deletePet(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: deletePetService,
+        httpCode: OK,
+        type: 'params',// update also in petService
+        serializer: null
+      }
+    )
   }
-};
 
-module.exports = {
-  createPet,
-  getPet,
-  updatePet,
-  deletePet,
-  getPetById
-};
+  static async getPetById(req, res) {
+    super.base(
+      {
+        req: req,
+        res: res,
+        handler: getPetByIdService,
+        httpCode: OK,
+        type: 'params',// update also in petService
+        serializer: petSerialize
+      }
+    )
+  }
+
+}
+
+module.exports = PetController;

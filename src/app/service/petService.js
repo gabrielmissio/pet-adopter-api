@@ -43,14 +43,12 @@ const getPet = async payload => {
   }
 };
 
-const updatePet = async(id, payload) => {
+const updatePet = async(payload) => {
   try {
-    const petToUpdate = await PetRepository.getById(id);
+    const petToUpdate = await PetRepository.getById(payload.id);
     if (!petToUpdate) {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
-
-    payload.id = id;
     payload.createdAt = petToUpdate.createdAt;
     payload.matches = petToUpdate.matches;
 
@@ -64,9 +62,9 @@ const updatePet = async(id, payload) => {
   }
 };
 
-const deletePet = async id => {
+const deletePet = async payload => {
   try {
-    const petToUpdate = await PetRepository.getById(id);
+    const petToUpdate = await PetRepository.getById(payload.id);
     if (!petToUpdate) {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -76,7 +74,7 @@ const deletePet = async id => {
     }
     
     // TODO: add validate
-    const response = await PetRepository.disableAccountById(id);
+    const response = await PetRepository.disableAccountById(payload.id);
 
     return response;
   } catch (error) {
@@ -85,9 +83,9 @@ const deletePet = async id => {
   }
 };
 
-const getPetById = async id => {
+const getPetById = async payload => {
   try {
-    const pet = await PetRepository.getById(id);
+    const pet = await PetRepository.getById(payload.id);
     if (!pet) {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
