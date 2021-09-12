@@ -4,22 +4,27 @@ const {
   query,
   deepScan,
   get,
-  update
+  update,
+  putItem
 } = require('./../repository/clientRepository');
 const {
   buildQueryParams,
   buildGetParams,
   buildUpdateParams,
   buildDeepScanParams,
+  buildPutItemsParams
 } = require('./../mapper/clientMapper');
 const {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
-  buildUserInfoObject,
+  buildUserObject,
   buildGetUsersByStatusParams,
-  buildUpdateUserAccountStatusParams
+  buildUpdateUserAccountStatusParams,
+  buildCreateUserParams
 } = require('./../mapper/userMapper');
+
+const { mergeObjects } = require('./../../helpers/utlis')
 
 const {
   errorMessagesEnums: {
@@ -38,7 +43,7 @@ const {
 
 const getUsers = async payload => {
   try {
-    const users = await getUsersByStatus(payload.status);
+    const users = await getUsersByStatus(payload.accountStatus);
 
     return users;
   } catch (error) {
@@ -54,12 +59,15 @@ const updateUser = async(id, payload) => {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
-    const user = buildUserInfoObject(payload);// TODO: merge request params with db params
-    await update(buildUpdateParams(buildUpdateUserParams({id: id, value: user})));
+    payload.id = id;
+    payload.createdAt = userToUpdate.createdAt;
+    payload.matches = userToUpdate.matches;
+    payload.password = userToUpdate.password;// TODO: remove this shit
+    const mergedObject = mergeObjects(userToUpdate, payload);
+    
     // TODO: validate response
-
-    console.log(payload);
-    return userToUpdate;
+    await putItem(buildPutItemsParams(buildCreateUserParams(mergedObject)));
+    return mergedObject;
   } catch (error) {
     console.log(`UserService -> updateUser -> error -> ${JSON.stringify(error)}`);
     throw error;
