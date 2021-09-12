@@ -4,20 +4,17 @@ const { isAccountActive } = require('./../../helpers/utlis');
 const {
   query,
   deepScan,
-  get,
   update,
   putItem
 } = require('./../repository/clientRepository');
 const {
   buildQueryParams,
-  buildGetParams,
   buildUpdateParams,
   buildDeepScanParams,
   buildPutItemsParams
 } = require('./../mapper/clientMapper');
 const {
   buildGetUserByEmailParams,
-  buildGetUserByIdParams,
   buildUpdateUserParams,
   buildGetUsersByStatusParams,
   buildUpdateUserAccountStatusParams,
@@ -53,9 +50,13 @@ const getUsers = async payload => {
 
 const updateUser = async(id, payload) => {
   try {
-    const userToUpdate = await getUserByIdHandler(id);
+    const userToUpdate = await UserRepository.getById(id);
     if (!userToUpdate) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
+
+    if (!isAccountActive(userToUpdate)) {
+      throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
 
     payload.id = id;
@@ -75,7 +76,7 @@ const updateUser = async(id, payload) => {
 
 const deleteUser = async id => { // TODO: implement deleteUserById
   try {
-    const user = await getUserByIdHandler(id);
+    const user = await UserRepository.getById(id);
     if (!user) {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -144,19 +145,6 @@ const getUsersByStatus = async status => {
     throw error;
   }
 };
-
-const getUserByIdHandler = async payload => {
-  try {
-    const params = buildGetUserByIdParams(payload);
-    const response = await get(buildGetParams(params));
-
-    return response.Item;
-  } catch (error) {
-    console.log('AuthService -> getUserByEmail -> error -> ', error);
-    throw error;
-  }
-};
-
 
 module.exports = {
   getUsers,
