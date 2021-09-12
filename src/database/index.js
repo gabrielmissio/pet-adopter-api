@@ -165,7 +165,9 @@ class DatabaseParamsBuilder {
   static update(payload) {
     return {
       TableName: payload.tableName,
-      Key: payload.key
+      Key: payload.key,
+      UpdateExpression: payload.updateExpression,
+      ExpressionAttributeValues: payload.expressionAttributeValues
     };
   }
 }
