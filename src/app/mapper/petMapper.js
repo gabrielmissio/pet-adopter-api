@@ -1,5 +1,6 @@
 const { v4: uuid } = require('uuid');
 const { PETS_TABLE_NAME } = require('./../../config');
+const { buildUpdatAccountStatusParams } = require('./commonMapper');
 
 const buildPetObject = payload => {
   return {
@@ -44,9 +45,15 @@ const buildGetPetByIdParams = id => {
   };
 };
 
+const buildUpdatePetAccountStatusParams = payload => {
+  payload.tableName = PETS_TABLE_NAME;
+  return buildUpdatAccountStatusParams(payload);
+};
+
 module.exports = {
   buildPetObject,
   buildCreatePetParams,
   buildGetPetsByStatusParams,
-  buildGetPetByIdParams
+  buildGetPetByIdParams,
+  buildUpdatePetAccountStatusParams
 };
