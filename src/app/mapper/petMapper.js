@@ -10,7 +10,7 @@ const buildPetObject = payload => {
     size: payload.size,
     estimatedAge: payload.estimatedAge,
     estimatedLongevity: payload.estimatedLongevity,
-    accountStatus: payload.accountStatus || 'active',
+    accountStatus: payload.accountStatus,
     adoption: payload.adoption || {},
     createdAt: payload.createdAt || Date.now(),
     updatedAt: Date.now(),
