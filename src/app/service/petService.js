@@ -1,4 +1,6 @@
 const { putItem } = require('./../repository/clientRepository');
+const { mergeObjects } = require('./../../helpers/utlis')
+const { RequestError } = require('./../../helpers/errors');
 const {
   buildPutItemsParams,
   buildDeepScanParams,
@@ -15,7 +17,18 @@ const {
   get
 } = require('./../repository/clientRepository');
 
-const { mergeObjects } = require('./../../helpers/utlis')
+const {
+  errorMessagesEnums: {
+    PET_NOT_FOUND
+  },
+  errorScopesEnums: {
+    NOT_FOUND: NOT_FOUND_SCOPE,
+  },
+  httpCodesEnums: {
+    NOT_FOUND: NOT_FOUND_CODE,
+  }
+} = require('./../../helpers/enums');
+
 
 const createPet = async payload => {
   try {
@@ -46,8 +59,9 @@ const updatePet = async(id, payload) => {
   try {
     const petToUpdate = await getPetByIdHandler(id);
     if (!petToUpdate) {
-      throw new RequestError('Pet not found', 404, 'NOT_FOUND');
+      throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
+
     payload.id = id;
     payload.createdAt = petToUpdate.createdAt;
     payload.matches = petToUpdate.matches;
@@ -64,6 +78,11 @@ const updatePet = async(id, payload) => {
 
 const deletePet = async id => {
   try {
+    const petToUpdate = await getPetByIdHandler(id);
+    if (!petToUpdate) {
+      throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
+
     const response = {message: `DELETE /pet/${id}`};// await singupService(req.body);
 
     return response;
@@ -76,6 +95,9 @@ const deletePet = async id => {
 const getPetById = async id => {
   try {
     const pet = await getPetByIdHandler(id);
+    if (!pet) {
+      throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
 
     return pet;
   } catch (error) {
