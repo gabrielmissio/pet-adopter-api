@@ -1,4 +1,5 @@
 const { USERS_TABLE_NAME } = require('./../../config');
+const { v4: uuid } = require('uuid');
 
 const buildGetUserByEmailParams = payload => {
   return {
@@ -38,7 +39,7 @@ const buildUpdateUserAccountStatusParams = payload => {
     key: {
       'id': payload.id
     },
-    updateExpression: 'set info.accountStatus = :value',
+    updateExpression: 'set accountStatus = :value',
     expressionAttributeValues: {':value': payload.accountStatus}
   };
 };
@@ -46,34 +47,42 @@ const buildUpdateUserAccountStatusParams = payload => {
 const buildGetUsersByStatusParams = status => {
   return {
     tableName: USERS_TABLE_NAME,
-    filterExpression: "#info.#accountStatus = :value",
-    expressionAttributeNames: {
-        '#info': 'info',
-        "#accountStatus": "accountStatus"
-    },
+    filterExpression: "accountStatus = :value",
     expressionAttributeValues: {
         ':value': status
     }
   };
 };
 
-const buildUserInfoObject = payload => {
+const buildUserObject = payload => {
   return {
+    id: payload.id || uuid(),
+    name: payload.name,
+    email: payload.email,
+    password: payload.password,
+    accountStatus: payload.accountStatus,
+    createdAt: payload.createdAt || Date.now(),
     updatedAt: Date.now(),
-    addresses: payload.addresses,
-    matches: payload.matches,
-    phones: payload.phones,
-    adoptions: payload.adoptions,
-    accountStatus: payload.accountStatus
+    addresses: payload.addresses || [],
+    matches: payload.matches || [],
+    phones: payload.phones || [],
+    adoptions: payload.adoptions || [],
   };
 };
 
+const buildCreateUserParams = payload => {
+  return {
+    tableName: USERS_TABLE_NAME,
+    item: payload
+  };
+};
 
 module.exports = {
   buildGetUserByEmailParams,
   buildGetUserByIdParams,
   buildUpdateUserParams,
-  buildUserInfoObject,
+  buildUserObject,
   buildGetUsersByStatusParams,
-  buildUpdateUserAccountStatusParams
+  buildUpdateUserAccountStatusParams,
+  buildCreateUserParams
 };
