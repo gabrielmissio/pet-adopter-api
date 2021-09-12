@@ -50,7 +50,7 @@ class PetController extends BaseController {
         res: res,
         handler: updatePetService,
         httpCode: OK,
-        type: 'body',// update also in petService
+        type: 'body',
         serializer: petSerialize
       }
     )
@@ -63,7 +63,7 @@ class PetController extends BaseController {
         res: res,
         handler: deletePetService,
         httpCode: OK,
-        type: 'params',// update also in petService
+        type: 'params',
         serializer: null
       }
     )
@@ -76,7 +76,7 @@ class PetController extends BaseController {
         res: res,
         handler: getPetByIdService,
         httpCode: OK,
-        type: 'params',// update also in petService
+        type: 'params',
         serializer: petSerialize
       }
     )
