@@ -28,9 +28,32 @@ class BaseRepository {
       tableName: this.tableName,
       item: payload
     };
+  
+    return putItem(buildPutItemsParams(params));
+  }
 
-    const response = await putItem(buildPutItemsParams(params));// TODO: validate response
-    return response;
+  async changeAccountStatus(id, accountStatus) {
+    const { buildUpdateParams } = require('./../mapper/clientMapper');
+    const { update } = require('./clientRepository');
+    
+    const params = {
+      tableName: this.tableName,
+      key: {
+        'id': id
+      },
+      updateExpression: 'set accountStatus = :value',
+      expressionAttributeValues: {':value': accountStatus}
+    };
+
+    return update(buildUpdateParams(params));
+  }
+
+  async disableAccountById(id) {
+    return this.changeAccountStatus(id, 'inactive');
+  }
+
+  async enableAccountById(id) {
+    return this.changeAccountStatus(id, 'inactive');
   }
 };
 
