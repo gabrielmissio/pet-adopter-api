@@ -36,6 +36,7 @@ const {
   }
 } = require('./../../helpers/enums');
 
+const PetRepository = require('./../repository/petRepository');
 
 const createPet = async payload => {
   try {
@@ -64,7 +65,7 @@ const getPet = async payload => {
 
 const updatePet = async(id, payload) => {
   try {
-    const petToUpdate = await getPetByIdHandler(id);
+    const petToUpdate = await PetRepository.getById(id);
     if (!petToUpdate) {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -85,7 +86,7 @@ const updatePet = async(id, payload) => {
 
 const deletePet = async id => {
   try {
-    const petToUpdate = await getPetByIdHandler(id);
+    const petToUpdate = await PetRepository.getById(id);
     if (!petToUpdate) {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -106,7 +107,7 @@ const deletePet = async id => {
 
 const getPetById = async id => {
   try {
-    const pet = await getPetByIdHandler(id);
+    const pet = await PetRepository.getById(id);
     if (!pet) {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
@@ -124,18 +125,6 @@ const getPetsByStatus = async status => {
     const response = await deepScan(buildDeepScanParams(params));
 
     return response.Items;
-  } catch (error) {
-    console.log('AuthService -> getUserByEmail -> error -> ', error);
-    throw error;
-  }
-};
-
-const getPetByIdHandler = async payload => {
-  try {
-    const params = buildGetPetByIdParams(payload);
-    const response = await get(buildGetParams(params));
-
-    return response.Item;
   } catch (error) {
     console.log('AuthService -> getUserByEmail -> error -> ', error);
     throw error;
