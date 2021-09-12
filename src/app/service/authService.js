@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { SECRET } = require('./../../config');// TODO: get secret from parameter store
-const { isUserIsActive } = require('./../../helpers/utlis');
+const { isAccountActive } = require('./../../helpers/utlis');
 const { RequestError } = require('./../../helpers/errors');
 const { putItem } = require('./../repository/clientRepository');
 const {  getUserByEmail } = require('./../service/userService');
@@ -66,7 +66,7 @@ const singin = async payload => {
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
-    if (!isUserIsActive(user)) {
+    if (!isAccountActive(user)) {
       throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
 

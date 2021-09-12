@@ -1,6 +1,7 @@
-const { putItem } = require('./../repository/clientRepository');
 const { mergeObjects } = require('./../../helpers/utlis')
 const { RequestError } = require('./../../helpers/errors');
+const { isAccountActive } = require('./../../helpers/utlis');
+const { putItem } = require('./../repository/clientRepository');
 const {
   buildPutItemsParams,
   buildDeepScanParams,
@@ -22,13 +23,16 @@ const {
 
 const {
   errorMessagesEnums: {
-    PET_NOT_FOUND
+    PET_NOT_FOUND,
+    PET_WITH_INACTIVE_ACCOUNT
   },
   errorScopesEnums: {
     NOT_FOUND: NOT_FOUND_SCOPE,
+    INACTIVE_ACCOUNT: INACTIVE_ACCOUNT_SCOPE
   },
   httpCodesEnums: {
     NOT_FOUND: NOT_FOUND_CODE,
+    UNAUTHORIZED: UNAUTHORIZED_CODE
   }
 } = require('./../../helpers/enums');
 
@@ -86,6 +90,10 @@ const deletePet = async id => {
       throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
+    if (!isAccountActive(petToUpdate)) {
+      throw new RequestError(PET_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
+    }
+    
     // TODO: add validate
     const response = await deletePetById(id);
 

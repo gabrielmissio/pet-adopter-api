@@ -1,5 +1,6 @@
+const { mergeObjects } = require('./../../helpers/utlis')
 const { RequestError } = require('./../../helpers/errors');
-const { isUserIsActive } = require('./../../helpers/utlis');
+const { isAccountActive } = require('./../../helpers/utlis');
 const {
   query,
   deepScan,
@@ -23,9 +24,6 @@ const {
   buildUpdateUserAccountStatusParams,
   buildCreateUserParams
 } = require('./../mapper/userMapper');
-
-const { mergeObjects } = require('./../../helpers/utlis')
-
 const {
   errorMessagesEnums: {
     USER_NOT_FOUND,
@@ -81,7 +79,7 @@ const deleteUser = async id => { // TODO: implement deleteUserById
       throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
     }
 
-    if (!isUserIsActive(user)) {
+    if (!isAccountActive(user)) {
       throw new RequestError(USER_WITH_INACTIVE_ACCOUNT, UNAUTHORIZED_CODE, INACTIVE_ACCOUNT_SCOPE);
     }
     

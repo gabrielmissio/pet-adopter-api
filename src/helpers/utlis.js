@@ -53,7 +53,7 @@ const getDynamodbResponseError = requestResponse => requestResponse && requestRe
 
 const buildResponseMessage = message => ({ message });
 
-const isUserIsActive = user => user.accountStatus && user.accountStatus === 'active';// TODO: replace 'active' to active status enum
+const isAccountActive = entity => entity.accountStatus && entity.accountStatus === 'active';// TODO: replace 'active' to active status enum
 
 const mergeObjects = (baseObject, toReplaceObject) => Object.assign({}, baseObject, toReplaceObject);
 
@@ -63,6 +63,6 @@ module.exports = {
   buildResponseMessage,
   getStatusCode,
   formatError,
-  isUserIsActive,
+  isAccountActive,
   mergeObjects
 };
