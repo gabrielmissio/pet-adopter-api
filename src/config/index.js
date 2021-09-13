@@ -6,12 +6,17 @@ const DYNAMODB_CLIENT = new AWS.DynamoDB.DocumentClient({
   region
 });
 
+const S3_CLIENT = new AWS.S3({
+  region
+});
+
 const USERS_TABLE_NAME = process.env.USERS_TABLE_NAME;
 const PETS_TABLE_NAME = process.env.PETS_TABLE_NAME;
 const SECRET = process.env.SECRET;
 
 module.exports = {
   DYNAMODB_CLIENT,
+  S3_CLIENT,
   USERS_TABLE_NAME,
   PETS_TABLE_NAME,
   SECRET

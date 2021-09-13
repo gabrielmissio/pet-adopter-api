@@ -29,6 +29,9 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
+    "lambda-multipart-parser": "^1.0.1",
+    "mime-types": "^2.1.32",
+    "serverless-apigw-binary": "^0.4.4",
     "serverless-http": "^2.7.0",
     "uuid": "^8.3.2"
   }

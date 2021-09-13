@@ -1,6 +1,9 @@
 service: pet-adopter-api
 
 custom:
+  apigwBinary:
+    types:
+      - 'multipart/form-data'
   params:
     usersTableName: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/users/name}
     usersTableArn: ${ssm:/petAdopter/${opt:stage, 'dev'}/table/users/arn}
@@ -29,11 +32,27 @@ provider:
         - ${self:custom.params.usersTableArn}/*
         - ${self:custom.params.usersTableArn}
         - ${self:custom.params.petsTableArn}
+    - Effect: 'Allow'
+      Action:
+        - 's3:*'
+      Resource:
+        - arn:aws:s3:::pet-adoper-photos/*
+        - arn:aws:s3:::pet-adoper-photos
 
 plugins:
+  - serverless-apigw-binary
   - serverless-offline
 
 functions:
+  appImages:
+    handler: src/app/service/photoService.handler
+    timeout: 30
+    events:
+      - http:
+          path: /photo
+          method: POST
+          cors: 
+            origin: "*"
   app:
     handler: src/index.handler
     timeout: 30
