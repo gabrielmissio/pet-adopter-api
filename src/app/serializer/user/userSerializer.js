@@ -2,6 +2,7 @@ const { serializeList: addreddSerializerList } = require('./addressSerializer');
 const { serializeList: adoptionSerializerList } = require('./adoptionSerializer');
 const { serializeList: phoneSerializerList } = require('./phoneSerializer');
 const { serializeList: matchSerializerList } = require('./matchSerializer');
+const { serializeList: photoSerializerList } = require('./photoSerializer');
 
 const serialize = ({
   id,
@@ -10,6 +11,7 @@ const serialize = ({
   accountStatus,
   createdAt,
   updatedAt,
+  photos,
   addresses,
   phones,
   adoptions,
@@ -24,6 +26,7 @@ const serialize = ({
     accountStatus,
     createdAt,
     updatedAt,
+    photos: photoSerializerList(photos || []),
     addresses: addreddSerializerList(addresses || []),
     phones: phoneSerializerList(phones || []),
     adoptions: adoptionSerializerList(adoptions || []),
