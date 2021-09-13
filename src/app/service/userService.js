@@ -88,9 +88,26 @@ const getUserById = async payload => {
   }
 };
 
+const createPhotoURL = async payload => {
+  try {
+    const user = await UserRepository.getById(payload.id);
+    // rollback photo s3
+    if (!user) {
+      throw new RequestError(USER_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
+
+    const response = await UserRepository.appendToList(payload.id, 'photos', payload.url);
+    console.log(response);
+    return user;
+  } catch (error) {
+    console.log(`UserService -> getUserById -> error -> ${JSON.stringify(error)}`);
+    throw error;
+  }
+};
 module.exports = {
   getUsers,
   updateUser,
   deleteUser,
-  getUserById
+  getUserById,
+  createPhotoURL
 };
