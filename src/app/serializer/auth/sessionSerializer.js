@@ -1,4 +1,4 @@
-const { serialize: authUserSerializer } = require('./authUserSerializer');
+const { serialize: authUserSerializer } = require('./../user/userSerializer');
 
 const serialize = ({ user, token }) => {
   return {

@@ -27,10 +27,10 @@ const serialize = ({
     estimatedLongevity,
     accountStatus,
     description,
-    photos: photoSerializerList(photos || []),
     adoption,
     createdAt,
     updatedAt,
+    photos: photoSerializerList(photos || []),
     matches: matchSerializerList(matches || [])
   };
 };
