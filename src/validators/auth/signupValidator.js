@@ -10,7 +10,14 @@ const signinValidatorSchema = Joi.object().keys({
       .required(),
     password: Joi.string()
       .pattern(passwordRegex)
-      .required()      
+      .required(),
+    addresses: Joi.array()
+      .min(1),
+    phones: Joi.array()
+      .min(1),
+    photos: Joi.array()
+      .min(1)
+      
   });
 
 module.exports = signinValidatorSchema;
