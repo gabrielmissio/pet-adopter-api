@@ -97,10 +97,28 @@ const getPetById = async payload => {
   }
 };
 
+const createPhotoURL = async payload => {
+  try {
+    const pet = await PetRepository.getById(payload.id);
+    // rollback photo s3
+    if (!pet) {
+      throw new RequestError(PET_NOT_FOUND, NOT_FOUND_CODE, NOT_FOUND_SCOPE);
+    }
+
+    const response = await PetRepository.appendToList(payload.id, 'photos', payload.url);
+    console.log(response);
+    return pet;
+  } catch (error) {
+    console.log(`UserService -> createPhotoURL -> error -> ${JSON.stringify(error)}`);
+    throw error;
+  }
+};
+
 module.exports = {
   createPet,
   getPet,
   updatePet,
   deletePet,
-  getPetById
+  getPetById,
+  createPhotoURL
 };

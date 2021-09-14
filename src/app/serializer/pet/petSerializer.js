@@ -25,11 +25,11 @@ const serialize = ({
     estimatedAge,
     estimatedLongevity,
     accountStatus,
-    photos: photoSerializerList(photos),
+    photos: photoSerializerList(photos || []),
     adoption,
     createdAt,
     updatedAt,
-    matches: matchSerializerList(matches)
+    matches: matchSerializerList(matches || [])
   };
 };
 

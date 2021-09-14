@@ -3,7 +3,8 @@ const bucketName = 'pet-adoper-photos';
 const parser = require('lambda-multipart-parser');
 const { v4: uuid } = require('uuid');
 const { S3_CLIENT } = require('./../../config');
-const { createPhotoURL } = require('./../service/userService');
+const { createPhotoURL: createPhotoURLUser } = require('./../service/userService');
+const { createPhotoURL: createPhotoURLPet } = require('./../service/petService');
 
 exports.handler = async event => {
   try{
@@ -24,7 +25,8 @@ exports.handler = async event => {
     // valite response
     const URL = `https://${bucketName}.s3.amazonaws.com/` + key;
 
-    const appendPhotoUrlToMember = headersLowerCase.type === 'user' ? await createPhotoURL({id: id, url: URL}) : (() => console.log('okkkkk'));
+    const appendPhotoHandler = headersLowerCase.type === 'user' ? createPhotoURLUser : createPhotoURLPet;
+    const appendPhotoUrlToMember = await appendPhotoHandler({id: id, url: URL});
     console.log(appendPhotoUrlToMember);
 
     return {
