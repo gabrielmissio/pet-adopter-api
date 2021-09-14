@@ -1,4 +1,5 @@
 const { serializeList: matchSerializerList } = require('./matchSerializer');
+const { serializeList: photoSerializerList } = require('./photoSerializer');
 
 const serialize = ({
   id,
@@ -9,6 +10,7 @@ const serialize = ({
   estimatedAge,
   estimatedLongevity,
   accountStatus,
+  photos,
   adoption,
   createdAt,
   updatedAt,
@@ -23,6 +25,7 @@ const serialize = ({
     estimatedAge,
     estimatedLongevity,
     accountStatus,
+    photos: photoSerializerList(photos),
     adoption,
     createdAt,
     updatedAt,
