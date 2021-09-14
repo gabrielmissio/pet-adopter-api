@@ -10,6 +10,7 @@ class User {
     this.createdAt = payload.createdAt || Date.now(),
     this.updatedAt = Date.now(),
     this.addresses = payload.addresses || [],
+    this.photos = payload.photos || [],
     this.matches = payload.matches || [],
     this.phones = payload.phones || [],
     this.adoptions = payload.adoptions || []
