@@ -10,6 +10,7 @@ class Pet {
     this.estimatedAge = payload.estimatedAge,
     this.estimatedLongevity = payload.estimatedLongevity,
     this.accountStatus = payload.accountStatus,
+    this.description = payload.description,
     this.photos = payload.photos || [],
     this.adoption = payload.adoption || {},
     this.createdAt = payload.createdAt || Date.now(),

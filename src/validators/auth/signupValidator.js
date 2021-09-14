@@ -16,7 +16,8 @@ const signinValidatorSchema = Joi.object().keys({
     phones: Joi.array()
       .min(1),
     photos: Joi.array()
-      .min(1)
+      .min(1),
+    description: Joi.string()
       
   });
 

@@ -7,6 +7,7 @@ class User {
     this.email = payload.email,
     this.password = payload.password,
     this.accountStatus = payload.accountStatus,
+    this.description = payload.description,
     this.createdAt = payload.createdAt || Date.now(),
     this.updatedAt = Date.now(),
     this.addresses = payload.addresses || [],
